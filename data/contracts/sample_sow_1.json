@@ -1,0 +1,48 @@
+{
+  "vendor_name": "Nguyen-Roach",
+  "client_name": "Clark-Foster",
+  "contract_id": "SOW-84652373",
+  "currency": "USD",
+  "net_terms": "Net 30",
+  "early_payment_discount": null,
+  "default_tax_rate": 0.0909,
+  "allowed_variance_pct": 2.0,
+  "line_items": [
+    {
+      "description": "Stemware Rack Display Kitchen Wine Glass Holder Bottle Carbon Steel Free Punch",
+      "sku": null,
+      "unit_price": 46.5500,
+      "max_quantity": null,
+      "discount_pct": null
+    },
+    {
+      "description": "VTG (4) 7 Ounce Since 1852 Milk Bottle Wine Carafe Juice Glass with Cork Lids",
+      "sku": null,
+      "unit_price": 15.4000,
+      "max_quantity": null,
+      "discount_pct": null
+    },
+    {
+      "description": "Vintage Crystal Red Wine Glasses NOS West Germany 1983 6 10 ounce elegant stems",
+      "sku": null,
+      "unit_price": 39.0000,
+      "max_quantity": null,
+      "discount_pct": null
+    },
+    {
+      "description": "3 Ikea Stainless Steel 4-bottle Wine Rack 300.557.60 - great condition gift it!",
+      "sku": null,
+      "unit_price": 27.5000,
+      "max_quantity": null,
+      "discount_pct": null
+    },
+    {
+      "description": "Lolita \"Wine Bouquet\" Hand Painted and Decorated Wine Glass NIB",
+      "sku": null,
+      "unit_price": 22.0000,
+      "max_quantity": null,
+      "discount_pct": null
+    }
+  ]
+}
+

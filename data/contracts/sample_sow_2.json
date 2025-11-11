@@ -1,0 +1,27 @@
+{
+  "vendor_name": "Scott-Howard",
+  "client_name": "Williams, Schneider and Gomez",
+  "contract_id": "SOW-37451664",
+  "currency": "USD",
+  "net_terms": "Net 30",
+  "early_payment_discount": null,
+  "default_tax_rate": 0.0909,
+  "allowed_variance_pct": 2.0,
+  "line_items": [
+    {
+      "description": "PUMA Boys Youth Universal FG Jr Soccer Cleats 2.5 White High Red NEW Futbol",
+      "sku": null,
+      "unit_price": 19.9900,
+      "max_quantity": null,
+      "discount_pct": null
+    },
+    {
+      "description": "Lotto Youth Boys Fuerzapura L500 Jr Soccer Cleats Size 2.5 White Blue M6147 2.5Y",
+      "sku": null,
+      "unit_price": 19.9880,
+      "max_quantity": null,
+      "discount_pct": null
+    }
+  ]
+}
+

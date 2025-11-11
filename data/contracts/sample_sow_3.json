@@ -1,0 +1,34 @@
+{
+  "vendor_name": "Bailey, Murray and Lewis",
+  "client_name": "Hester Inc",
+  "contract_id": "SOW-40108666",
+  "currency": "USD",
+  "net_terms": "Net 30",
+  "early_payment_discount": null,
+  "default_tax_rate": 0.0909,
+  "allowed_variance_pct": 2.0,
+  "line_items": [
+    {
+      "description": "Microsoft Xbox One 1 - 500 GB Console - Black w/ Controller & Power Supply GOOD",
+      "sku": null,
+      "unit_price": 160.000,
+      "max_quantity": null,
+      "discount_pct": null
+    },
+    {
+      "description": "Nintendo DSOriginal NTR-001 Console - Camouflage - Tested Works",
+      "sku": null,
+      "unit_price": 1.0900,
+      "max_quantity": null,
+      "discount_pct": null
+    },
+    {
+      "description": "Nintendo 2DS Console Blue Japan model Combine Shipping available 2",
+      "sku": null,
+      "unit_price": 50.4900,
+      "max_quantity": null,
+      "discount_pct": null
+    }
+  ]
+}
+

@@ -2,13 +2,18 @@
 
 **Automatically compare supplier invoices to governing contracts, flag variances, and generate auditable exception notes in seconds.**
 
-## Problem Statement
+## Problem
 
-PactProof automatically compares supplier invoices to the governing contract/SOW, flags line-item and terms variances, and produces a grounded exception note—with each finding linked back to the document source for auditability. 
+Accounts Payable (AP) is the last gate before cash goes out. Invoices often drift from the deal: wrong unit prices, unapproved items, quantity overages, wrong tax/currency, or ignored payment terms. Manual, spreadsheet-driven checks are slow and error-prone, so overpayments slip through or require costly rework—and the audit trail is thin.
 
-Accounts Payable teams are the last gate before cash goes out. Invoices often drift from the deal: wrong unit prices, unapproved items, quantity overages, wrong tax/currency, or ignored payment terms. Manual checks are slow and error-prone, so overpayments slip through or require costly rework.
+PactProof changes the game: deterministic, auditable checks on every invoice vs contract/SOW in < 8 seconds, with each finding linked to the source (page/box) for evidence.
 
-**PactProof changes the game:** Deterministic, auditable checks on every invoice vs contract in under 8 seconds.
+
+## What is PactProof?
+
+PactProof is the contract-truth layer for AP. It reads the invoice and the contract/SOW, lines them up, and runs deterministic checks—unit-price variance, quantity caps, unknown line-items, currency/terms/tax. If something’s off, it generates a CFO-ready exception note that links each claim back to the exact spot on the documents.
+
+Where it fits: Shines on services/SOW and order-form invoices where POs/receipts don’t capture the real deal.
 
 ## Quick Start
 

@@ -1,0 +1,257 @@
+"""
+Generates exception notes from reconciliation results
+"""
+
+import logging
+from typing import Optional
+from datetime import datetime
+from jinja2 import Template
+from models import Invoice, Contract, ReconcileResponse, Finding, FindingSeverity
+import uuid
+import os
+
+logger = logging.getLogger(__name__)
+
+try:
+    import google.generativeai as genai
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+    logger.warning("Google Generative AI library not installed")
+
+
+EXCEPTION_NOTE_TEMPLATE = """COMPLIANCE INVOICE RECONCILIATION REPORT
+
+================================================================================
+
+DOCUMENT INFORMATION
+
+Date Generated:                {{ generated_date }}
+Report ID:                     {{ report_id }}
+Processing Status:             {% if summary.pass_ %}PASSED{% else %}EXCEPTION FLAGGED{% endif %}
+
+================================================================================
+
+INVOICE & CONTRACT DETAILS
+
+Invoice Number:                {{ invoice.invoice_number }}
+Invoice Date:                  {{ invoice.invoice_date }}
+Vendor Name:                   {{ invoice.seller_name }}
+Invoice Amount:                {{ invoice.currency or 'USD' }} {{ "%.2f"|format(subtotal_total) }}
+
+Contract/SOW ID:               {{ contract.contract_id }}
+Contract Vendor:               {{ contract.vendor_name }}
+Contract Currency:             {{ contract.currency }}
+Payment Terms:                 {{ contract.net_terms }}
+
+================================================================================
+
+RECONCILIATION SUMMARY
+
+The above invoice has been automatically reconciled against the governing contract 
+terms and conditions. The following analysis describes any variances identified:
+
+Total Findings:                {{ summary.total_count }}
+  • Critical Items:            {{ summary.major_count }}
+  • Advisory Items:            {{ summary.minor_count }}
+
+Status:                        {% if summary.pass_ %}COMPLIANT - No Action Required{% else %}REQUIRES ATTENTION - Action Needed{% endif %}
+
+================================================================================
+
+DETAILED VARIANCE ANALYSIS
+
+{% if findings %}
+{% for finding in findings %}
+ITEM {{ loop.index }}: {{ finding.type|replace('_', ' ') }}
+Severity Level:                {% if finding.severity == "MAJOR" %}CRITICAL{% else %}ADVISORY{% endif %}
+Description:                   {{ finding.details }}
+{% if finding.invoice_line_idx is not none %}
+Related Invoice Line:          Line {{ finding.invoice_line_idx + 1 }} - {{ invoice.items[finding.invoice_line_idx].description[:100] }}
+{% endif %}
+{% if finding.contract_line_idx is not none %}
+Related Contract Line:         Line {{ finding.contract_line_idx + 1 }} - {{ contract.line_items[finding.contract_line_idx].description[:100] }}
+{% endif %}
+
+{% endfor %}
+{% else %}
+No variances detected. The invoice aligns with all contract terms and conditions.
+
+{% endif %}
+
+================================================================================
+
+REQUIRED ACTIONS & RECOMMENDATIONS
+
+{% if summary.major_count > 0 %}
+CRITICAL ITEMS REQUIRE RESOLUTION
+
+The following actions must be completed before payment authorization:
+
+1. VENDOR CONTACT
+   Contact the vendor to clarify the discrepancies and request a corrected invoice
+   if necessary.
+
+2. PROCUREMENT VERIFICATION
+   Coordinate with the Procurement department to verify contract terms and 
+   conditions against the identified variances.
+
+3. MANAGEMENT APPROVAL
+   Submit for management review and approval with documented explanation of 
+   any approved exceptions to contract terms.
+
+Payment should be held until all critical items are resolved or formally approved 
+by authorized personnel.
+
+{% elif summary.minor_count > 0 %}
+ADVISORY ITEMS NOTED
+
+{{ summary.minor_count }} advisory finding(s) have been identified. While these 
+do not prevent payment processing, they should be reviewed for completeness.
+
+Payment may proceed with appropriate stakeholder notification.
+
+{% else %}
+INVOICE APPROVED FOR PROCESSING
+
+This invoice has been verified as compliant with all contract terms and conditions.
+No further action is required. Payment authorization may proceed.
+
+{% endif %}
+
+================================================================================
+
+CONTRACT REFERENCE TERMS
+
+Vendor Name:                   {{ contract.vendor_name }}
+Contract ID:                   {{ contract.contract_id }}
+Currency:                      {{ contract.currency }}
+Payment Terms:                 {{ contract.net_terms }}
+Default Tax Rate:              {{ "%.2f%%"|format(contract.default_tax_rate * 100) }}
+Allowed Price Variance:        ± {{ contract.allowed_variance_pct }}%
+
+================================================================================
+
+COMPLIANCE NOTICE
+
+This report has been generated by the PactProof Automated Compliance System 
+for the purpose of invoice reconciliation against contract terms. 
+
+All findings are subject to final review and approval by authorized personnel 
+before payment authorization.
+
+For questions or escalations, please contact your Compliance Management team.
+
+================================================================================
+"""
+
+
+class NoteGenerator:
+    
+    def __init__(self, google_api_key: str = ""):
+        self.template = Template(EXCEPTION_NOTE_TEMPLATE)
+        self.google_api_key = google_api_key or os.getenv("GOOGLE_API_KEY", "")
+        self.gemini_enabled = GEMINI_AVAILABLE and bool(self.google_api_key)
+        
+        if self.gemini_enabled:
+            try:
+                genai.configure(api_key=self.google_api_key)
+                try:
+                    self.model = genai.GenerativeModel('gemini-2.0-flash')
+                    logger.info("✓ Google Gemini 2.0 Flash API configured")
+                except Exception as e1:
+                    logger.warning(f"Gemini 2.0 Flash not available: {e1}. Trying 1.5 Flash...")
+                    try:
+                        self.model = genai.GenerativeModel('gemini-1.5-flash')
+                        logger.info("✓ Google Gemini 1.5 Flash API configured")
+                    except Exception as e2:
+                        logger.warning(f"Gemini 1.5 Flash not available: {e2}. Trying pro...")
+                        self.model = genai.GenerativeModel('gemini-pro')
+                        logger.info("✓ Google Gemini Pro API configured")
+            except Exception as e:
+                logger.error(f"Failed to configure Google Gemini: {e}")
+                self.gemini_enabled = False
+    
+    def draft_note(
+        self,
+        invoice: Invoice,
+        contract: Contract,
+        reconcile: ReconcileResponse
+    ) -> str:
+        logger.info(f"Generating note for invoice {invoice.invoice_number}")
+        
+        subtotal_total = invoice.subtotal.get("total", 0.0)
+        
+        generated_date = datetime.now().strftime("%B %d, %Y at %H:%M:%S")
+        report_id = f"RPT-{invoice.invoice_number}-{uuid.uuid4().hex[:8].upper()}"
+        
+        base_note = self.template.render(
+            invoice=invoice,
+            contract=contract,
+            summary=reconcile.summary,
+            findings=reconcile.findings,
+            subtotal_total=subtotal_total,
+            generated_date=generated_date,
+            report_id=report_id,
+        )
+        
+        if self.gemini_enabled:
+            try:
+                logger.info(f"[GEMINI] Enhancing note with AI analysis")
+                enhanced_note = self._enhance_with_gemini(
+                    base_note, 
+                    reconcile.findings, 
+                    reconcile.summary.pass_
+                )
+                return enhanced_note
+            except Exception as e:
+                logger.error(f"[GEMINI] Enhancement failed: {e}. Using base note.")
+                return base_note
+        
+        return base_note
+    
+    def _enhance_with_gemini(self, base_note: str, findings: list, passed: bool) -> str:
+        try:
+            if findings:
+                findings_summary = "\n".join([
+                    f"- {finding.type}: {finding.details} (Severity: {finding.severity})"
+                    for finding in findings
+                ])
+                
+                prompt = f"""You are a compliance analyst expert. Analyze the following findings from an invoice reconciliation and provide strategic recommendations.
+
+FINDINGS:
+{findings_summary}
+
+Based on these findings, provide:
+1. A brief executive summary (2-3 sentences) of the key compliance issues
+2. Risk assessment (Low/Medium/High)
+3. 2-3 specific recommended actions for resolution
+4. Suggested next steps for the AP team
+
+Keep the response professional, concise, and actionable. Format as plain text."""
+            else:
+                prompt = """You are a compliance analyst expert. This invoice has PASSED all reconciliation checks with no variances found.
+
+Provide a brief, professional summary including:
+1. A positive executive statement (1-2 sentences) confirming compliance
+2. Confirmation that the invoice is ready for payment processing
+3. A brief note about the automated compliance verification process
+
+Keep the response professional, positive, and concise. Format as plain text."""
+            
+            logger.info("[GEMINI] Sending request to Gemini API")
+            response = self.model.generate_content(prompt)
+            
+            ai_insights = response.text
+            logger.info("[GEMINI] Received AI insights")
+            
+            section_title = "AI-ASSISTED ANALYSIS" if findings else "AI-VERIFIED COMPLIANCE CONFIRMATION"
+            enhanced_note = base_note + "\n\n" + "="*80 + f"\n\n{section_title}\n\n" + "="*80 + "\n\n" + ai_insights
+            
+            return enhanced_note
+            
+        except Exception as e:
+            logger.error(f"[GEMINI] Error during enhancement: {e}")
+            raise
+

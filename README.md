@@ -1,4 +1,4 @@
-# 🔐 PactProof - Compliance Invoice Reconciliation
+# PactProof - Compliance Invoice Reconciliation
 
 **Automatically compare supplier invoices to governing contracts, flag variances, and generate auditable exception notes in seconds.**
 
@@ -67,7 +67,7 @@ npm run dev
 
 ## Features
 
-### ✨ Core Capabilities
+### Core Capabilities
 
 1. **Invoice Extraction**
    - Parse invoice images (JPG/PNG) or PDFs
@@ -169,10 +169,6 @@ Components                 Endpoints:
 - **No Batch Processing:** One invoice at a time; no bulk upload or parallel processing
 - **In-Memory State:** Application state resets on page refresh; no session persistence
 
-## License
-
-MIT
-
 ## Credits
 
 - Invoice dataset: Kaggle (https://www.kaggle.com/datasets/osamahosamabdellatif/high-quality-invoice-images-for-ocr)
@@ -180,5 +176,5 @@ MIT
 - LLM: Google Gemini
 - Built for Financial AI Hackathon Championship - 2025
 
-**PactProof: Compliance at Speed** 🔐
+**PactProof: Compliance at Speed**
 

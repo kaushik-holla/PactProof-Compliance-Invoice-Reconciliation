@@ -1,0 +1,50 @@
+{
+  "invoice": {
+    "client_name": "Hester Inc",
+    "client_address": "4000 Tonya Rapid Suite 963\nSouth Marissaport, MN 39537",
+    "seller_name": "Bailey, Murray and Lewis",
+    "seller_address": "33771 Powell Pike Suite 054\nEast Lisastad, RI 21938",
+    "invoice_number": "40108666",
+    "invoice_date": "2020-07-02",
+    "due_date": null,
+    "items": [
+      {
+        "description": "Microsoft Xbox One 1 - 500 GB Console - Black w/ Controller & Power Supply GOOD",
+        "quantity": 1.0,
+        "unit_price": 175.0,
+        "total_price": 192.5,
+        "tax": null,
+        "sku": null
+      },
+      {
+        "description": "Nintendo DSOriginal NTR-001 Console - Camouflage - Tested Works",
+        "quantity": 3.0,
+        "unit_price": 0.99,
+        "total_price": 3.27,
+        "tax": null,
+        "sku": null
+      },
+      {
+        "description": "Nintendo 2DS Console Blue Japan model Combine Shipping available 2",
+        "quantity": 5.0,
+        "unit_price": 54.99,
+        "total_price": 302.45,
+        "tax": null,
+        "sku": null
+      }
+    ],
+    "subtotal": {
+      "tax": 45.29,
+      "discount": null,
+      "total": 498.21
+    },
+    "currency": "USD",
+    "net_terms": "Net 30",
+    "tax_rate": null
+  },
+  "meta": [],
+  "parse": {
+    "pages": 1,
+    "markdown": "{\"invoice_number\": \"40108666\", \"invoice_date\": \"2020-07-02\", \"seller_name\": \"Bailey, Murray and Lewis\", \"seller_address\": \"33771 Powell Pike Suite 054\\nEast Lisastad, RI 21938\", \"client_name\": \"Hester Inc\", \"client_address\": \"4000 Tonya Rapid Suite 963\\nSouth Marissaport, MN 39537\", \"items\": [{\"description\": \"Microsoft Xbox One 1 - 500 GB Console - Black w/ Controller & Power Supply GOOD\", \"quantity\": 1.0, \"unit_price\": 175.0, \"total_price\": 192.5, \"tax\": null, \"sku\": null}, {\"description\": \"Nintendo DSOriginal NTR-001 Console - Camouflage - Tested Works\", \"quantity\": 3.0, \"unit_price\": 0.99, \"total_price\": 3.27, \"tax\": null, \"sku\": null}, {\"description\": \"Nintendo 2DS Console Blue Japan model Combine Shipping available 2\", \"quantity\": 5.0, \"unit_price\": 54.99, \"total_price\": 302.45, \"tax\": null, \"sku\": null}], \"subtotal\": {\"tax\": 45.29, \"discount\": null, \"total\": 498.21}, \"currency\": \"USD\", \"net_terms\": \"Net 30\", \"tax_rate\": null, \"due_date\": null}"
+  }
+}

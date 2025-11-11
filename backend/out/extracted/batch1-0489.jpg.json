@@ -1,0 +1,42 @@
+{
+  "invoice": {
+    "client_name": "Williams, Schneider and Gomez",
+    "client_address": "588 Morales Rapids\nEast Katherineton, MT 53545",
+    "seller_name": "Scott-Howard",
+    "seller_address": "45558 Davis Mountains\nEast Zacharyville, IA 99376",
+    "invoice_number": "37451664",
+    "invoice_date": "2020-11-06",
+    "due_date": null,
+    "items": [
+      {
+        "description": "PUMA Boys Youth Universal FG Jr Soccer Cleats 2.5 White High Red NEW Futbol",
+        "quantity": 2.0,
+        "unit_price": 19.99,
+        "total_price": 43.98,
+        "tax": null,
+        "sku": null
+      },
+      {
+        "description": "Lotto Youth Boys Fuerzapura L500 Jr Soccer Cleats Size 2.5 White Blue M6147 2.5Y",
+        "quantity": 5.0,
+        "unit_price": 19.99,
+        "total_price": 109.94,
+        "tax": null,
+        "sku": null
+      }
+    ],
+    "subtotal": {
+      "tax": 13.99,
+      "discount": null,
+      "total": 153.92
+    },
+    "currency": "USD",
+    "net_terms": "Net 30",
+    "tax_rate": null
+  },
+  "meta": [],
+  "parse": {
+    "pages": 1,
+    "markdown": "{\"invoice_number\": \"37451664\", \"invoice_date\": \"2020-11-06\", \"seller_name\": \"Scott-Howard\", \"seller_address\": \"45558 Davis Mountains\\nEast Zacharyville, IA 99376\", \"client_name\": \"Williams, Schneider and Gomez\", \"client_address\": \"588 Morales Rapids\\nEast Katherineton, MT 53545\", \"items\": [{\"description\": \"PUMA Boys Youth Universal FG Jr Soccer Cleats 2.5 White High Red NEW Futbol\", \"quantity\": 2.0, \"unit_price\": 19.99, \"total_price\": 43.98, \"tax\": null, \"sku\": null}, {\"description\": \"Lotto Youth Boys Fuerzapura L500 Jr Soccer Cleats Size 2.5 White Blue M6147 2.5Y\", \"quantity\": 5.0, \"unit_price\": 19.99, \"total_price\": 109.94, \"tax\": null, \"sku\": null}], \"subtotal\": {\"tax\": 13.99, \"discount\": null, \"total\": 153.92}, \"currency\": \"USD\", \"net_terms\": \"Net 30\", \"tax_rate\": null, \"due_date\": null}"
+  }
+}

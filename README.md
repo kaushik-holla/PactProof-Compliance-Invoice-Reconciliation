@@ -2,10 +2,6 @@
 
 **Automatically compare supplier invoices to governing contracts, flag variances, and generate auditable exception notes in seconds.**
 
-## One-Liner
-
-PactProof automatically compares supplier invoices to the governing contract/SOW, flags line-item and terms variances, and produces a grounded exception note—with each finding linked back to the document source for auditability.
-
 ## Problem Statement
 
 PactProof automatically compares supplier invoices to the governing contract/SOW, flags line-item and terms variances, and produces a grounded exception note—with each finding linked back to the document source for auditability. 
